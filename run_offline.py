@@ -22,7 +22,7 @@ def parse_args():
                         help='Path to saved network to evaluate')
     parser.add_argument('--rgb_path', type=str, default='data/rgb_img/1_1_0_20230228-163301_rgb.jpg',
                         help='RGB Image path')
-    parser.add_argument('--depth_path', type=str, default='data/depth_img/1_1_0_20230228-163301_depth.png',
+    parser.add_argument('--depth_path', type=str, default='WPI/depth_img/1_1_0_20230905-172504_depth.png',
                         help='Depth Image path')
     parser.add_argument('--use-depth', type=int, default=1,
                         help='Use Depth image for evaluation (1/0)')

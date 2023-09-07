@@ -30,7 +30,7 @@ def parse_args():
                         help='Input image size for the network')
     parser.add_argument('--use-depth', type=int, default=1,
                         help='Use Depth image for training (1/0)')
-    parser.add_argument('--use-rgb', type=int, default=1,
+    parser.add_argument('--use-rgb', type=int, default=0,
                         help='Use RGB image for training (1/0)')
     parser.add_argument('--use-dropout', type=int, default=1,
                         help='Use dropout for training (1/0)')
@@ -125,7 +125,7 @@ def run():
     dataset = Dataset(args.dataset_path,
                       output_size=args.input_size,
                       ds_rotate=args.ds_rotate,
-                      random_rotate=True,
+                      random_rotate=False,
                       random_zoom=False,
                       include_depth=args.use_depth,
                       include_rgb=args.use_rgb)
@@ -163,13 +163,22 @@ def run():
     for x, y, _, _, _ in dataset:
         count += 1
         arr_x = x.numpy()
+        print(arr_x.shape)
         depth_img = arr_x[0, :, :]
-        rgb_img = arr_x[1:, :, :].transpose((1, 2, 0))
+        # rgb_img = arr_x[1:, :, :].transpose((1, 2, 0))
+        rgb_img = None
         q_img, cos_img, sin_img, width_img, length_img = y
         grasp_q_img, grasp_angle_img, grasp_width_img, grasp_length_img = post_process_output(q_img, cos_img, sin_img, width_img, length_img)
         fig = plt.figure(figsize=(10, 10))
-        plot_results(fig, rgb_img, grasp_q_img, grasp_angle_img, depth_img=depth_img, no_grasps=1, grasp_width_img=grasp_width_img,
-        grasp_length_img=grasp_length_img)
+        plot_results(fig=fig,
+                         rgb_img=rgb_img,
+                         grasp_q_img=grasp_q_img,
+                         grasp_angle_img=grasp_angle_img,
+                         depth_img=depth_img,
+                         no_grasps=1,
+                         grasp_width_img=grasp_width_img,
+                         grasp_length_img=grasp_length_img,
+                         grasp_img=depth_img)
         fig.savefig('output/img_result_' + str(count) + '.pdf')
     # from IPython import embed; embed()
 
